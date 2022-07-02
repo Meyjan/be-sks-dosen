@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - be-sks-dosen</title>
+        {% else %}
+        <title>Welcome to BE-SKS-DOSEN!</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>BE-SKS-DOSEN: <a href="/index">Home</a></div>
+        <h2>This is just a fake website</h2>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
