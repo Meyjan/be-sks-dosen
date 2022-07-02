@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from mysql import connector as mariadb
 import json
 
@@ -38,14 +38,14 @@ def login():
 
     # Invalid username check
     if cur.rowcount < 1:
-        return "Failed to login"
+        return jsonify({"message": "Failed login. Invalid username/password", "token": ""}), 200
 
     # Invalid password check
     user = cur.fetchone()
     if user[2] != password:
-        return "Failed to Login"
+        return jsonify({"message": "Failed login. Invalid username/password", "token": ""}), 200
 
-    return 'Successful Login'
+    return jsonify({"message": "Successful login", "token": username}), 200
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -69,5 +69,5 @@ def register():
     cur.close()
 
     if failed:
-        return 'Failed Register'
-    return 'Successful Register'
+        return jsonify({"message": "Failed registration. Internal server error", "token":""}), 500
+    return jsonify({"message": "Successful register", "token": username}), 200
