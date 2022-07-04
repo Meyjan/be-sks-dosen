@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
 
+# Class User
+# Represents the user of 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     username = db.Column(db.String(length=100), index=True, unique=True, nullable=False)
@@ -29,11 +31,3 @@ class User(db.Model):
     def generate_auth_token(self, expiration = 60):
         token = jwt.encode({'id': self.id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=expiration)}, app.config['SECRET_KEY'], "HS256")
         return token
-
-    # def Verify_auth_token(token):
-    #     try:
-    #         data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
-    #         current_user = User.query.filter_by(id = data['id']).first()
-    #     except:
-    #         return None
-    #     return current_user
