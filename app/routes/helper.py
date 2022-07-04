@@ -28,8 +28,3 @@ def validate_auth_token(f):
         return f(current_user, *args, **kwargs)
 
     return decorator
-
-# Ping function
-@app.route('/ping')
-def ping():
-    return 'pong'
