@@ -7,6 +7,7 @@ import datetime
 # Class User
 # Represents the user of 
 class User(db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     username = db.Column(db.String(length=100), index=True, unique=True, nullable=False)
     email = db.Column(db.String(length=100), index=True, unique=True, nullable=False)

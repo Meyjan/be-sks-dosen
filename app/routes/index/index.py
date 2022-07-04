@@ -1,6 +1,6 @@
 from app import app
 from app.routes.helper import validate_auth_token
-from flask import render_template
+from flask import abort, jsonify, make_response, render_template
 
 # Index function
 # Returns simple html (can be rendered in browser)
@@ -8,6 +8,11 @@ from flask import render_template
 @app.route('/index')
 @validate_auth_token
 def index(user):
+    # Unauthorized access
+    if user is None:
+        abort(make_response(jsonify(message="Unauthorized"), 401))
+    
+    # Return scripted page
     user = {'username': user.username}
     posts = [
         {
