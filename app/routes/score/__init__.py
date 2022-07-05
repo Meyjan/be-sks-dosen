@@ -1,0 +1,1 @@
+from app.routes.score.insert_score import insert_score
