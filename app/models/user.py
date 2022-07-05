@@ -5,7 +5,7 @@ import jwt
 import datetime
 
 # Class User
-# Represents the user of 
+# Represents the user (usually a lecturer)
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
