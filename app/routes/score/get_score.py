@@ -23,32 +23,24 @@ def get_score(requester, score_id):
         'message': "Successfully get score"
     }), 200
 
-# # Update Score Common function
-# # Updates existing score from database based on score user_id and year
-# @app.route('/score', methods=['GET'])
-# @validate_auth_token
-# def update_score_common(requester):
-#     # Get Request Data
-#     postRequest = json.loads(request.data)
+# Get Score Common function
+# Gets existing score from database based on score user_id and year
+@app.route('/score', methods=['GET'])
+@validate_auth_token
+def get_score_common(requester):
+    # Get Request Data
+    args = request.args
 
-#     # Get user and year
-#     user = get_score_owner(postRequest)
-#     year = postRequest[constants.YEAR]
-    
-#     if user is None:
-#         abort(make_response(jsonify(message="User doesn't exist"), 400))
-#     score = Score.query.filter_by(user_id = user.id, year = year).first()
-#     if score is None:
-#         abort(make_response(jsonify(message="Score for the user at that year doesn't exists"), 400))
+    # Get filters
+    filter_keys = [constants.ID, constants.USER_ID, constants.YEAR, constants.POSITION, constants.SKS1_SCORE, constants.SKS2_SCORE, constants.SKS3_SCORE, constants.SUPPORT_SCORE, constants.CLUSTER]
+    filtered_args = dict([(key, value) for key, value in args.items() if key in filter_keys])
 
-#     # Execute update score
-#     score = parse_score_request(score, postRequest)
-#     db.session.commit()
+    # Get score
+    scores = Score.query.filter_by(**filtered_args).all()
+    scores_dict = [score.as_dict() for score in scores]
 
-#     # Return that request is successful
-#     return jsonify({
-#         'id': score.id,
-#         'username': user.username,
-#         'year': year,
-#         'message': "Successfully updated score"
-#     }), 200
+    # Return that request is successful
+    return jsonify({
+        'score': scores_dict,
+        'message': "Successfully get score"
+    }), 200
