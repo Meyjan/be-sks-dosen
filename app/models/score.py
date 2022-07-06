@@ -20,3 +20,7 @@ class Score(db.Model):
     # Identity function
     def __repr__(self):
         return '<Score {} at year {}>'.format(self.user_id, self.year)
+    
+    # Dictionary function
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}

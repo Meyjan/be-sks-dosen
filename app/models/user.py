@@ -16,6 +16,10 @@ class User(db.Model):
     # Identity function
     def __repr__(self):
         return '<User {}>'.format(self.username)
+    
+    # Dictionary function
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     # Setting password of user
     def set_password(self, password):

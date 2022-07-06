@@ -55,5 +55,5 @@ def delete_score_common(requester):
         'id': score_id,
         'username': user.username,
         'year': year,
-        'message': "Successfully updated score"
+        'message': "Successfully deleted score"
     }), 200
