@@ -74,25 +74,6 @@ def insert_score_csv(requester):
     # Put into database
     df.to_sql(Score.__tablename__, con = db.get_engine(), if_exists='append', index=False)
 
-
-
-    # postRequest = json.loads(request.data)
-
-    # # Get user and year
-    # user = get_score_owner(postRequest)
-    # year = postRequest[constants.YEAR]
-    
-    # if user is None:
-    #     abort(make_response(jsonify(message="User doesn't exist"), 400))
-    # if Score.query.filter_by(user_id = user.id, year = year).first() is not None:
-    #     abort(make_response(jsonify(message="Score for the user at that year exists"), 400))
-
-    # # Execute insert score
-    # score = Score(user_id = user.id, year = year)
-    # score = parse_score_request(score, postRequest)
-    # db.session.add(score)
-    # db.session.commit()
-
     # Return that request is successful
     return jsonify({
         'message': "Successfully inserted new scores"
