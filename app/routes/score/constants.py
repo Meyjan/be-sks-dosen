@@ -11,3 +11,5 @@ CLUSTER = 'cluster'
 
 # Other constants
 USERNAME = 'username'
+FILE = 'file'
+COMMIT_ALL_VALID = 'commit_all_valid'
