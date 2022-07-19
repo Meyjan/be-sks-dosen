@@ -12,6 +12,7 @@ class User(db.Model):
     username = db.Column(db.String(length=100), index=True, unique=True, nullable=False)
     email = db.Column(db.String(length=100), index=True, unique=True, nullable=False)
     password = db.Column(db.String(length=256), nullable=False)
+    roles = db.Column(db.String(length=100), nullable=False, default="view")
 
     # Identity function
     def __repr__(self):
