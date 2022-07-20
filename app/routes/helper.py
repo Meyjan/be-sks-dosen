@@ -1,3 +1,5 @@
+from logging import error
+from msilib.schema import Error
 from app import app
 from app.models import User
 from flask import jsonify, make_response, request
@@ -28,3 +30,12 @@ def validate_auth_token(f):
         return f(current_user, *args, **kwargs)
 
     return decorator
+
+# Verifying type string
+# Returns true if the type is string, if not return error
+def convert_to_string(x) -> tuple[str, Exception]:
+    try:
+        x_str = str(x)
+        return x_str, None
+    except ValueError:
+        return "", ValueError

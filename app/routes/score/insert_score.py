@@ -72,7 +72,14 @@ def insert_score_csv(requester):
         abort(make_response(jsonify(message=error_msg), 400))
     
     # Put into database
-    df.to_sql(Score.__tablename__, con = db.get_engine(), if_exists='append', index=False)
+    # df.to_sql(Score.__tablename__, con = db.get_engine(), if_exists='append', index=False)
+    try:
+        if commit_all_valid_data:
+            df.to_sql(Score.__tablename__, con = db.get_engine(), if_exists='append', index=False)
+        else:
+            df.to_sql(Score.__tablename__, con = db.get_engine(), if_exists='fail', index=False)
+    except:
+        abort(make_response(jsonify(message="Error when uploading data"), 500))
 
     # Return that request is successful
     return jsonify({
