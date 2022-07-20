@@ -1,10 +1,11 @@
 from app import app, db
 from app.models import User
-from app.routes.helper import convert_to_string, validate_auth_token
+from app.routes.helper import convert_to_string, validate_auth_token_admin_access
 from flask import abort, jsonify, make_response, request
 
 import json
 
+from app.routes.const import *
 from app.routes.user.const import *
 
 '''
@@ -13,12 +14,8 @@ Adds new user if the user is not registered to database
 Like register but allows to check for the role
 '''
 @app.route('/user/insert', methods=['POST'])
-@validate_auth_token
+@validate_auth_token_admin_access
 def insert_user(requester: User):
-    # Making sure the user is admin
-    if requester.roles != ROLE_ADMIN:
-        abort(make_response(jsonify(message=ERR_ADMIN_REQUIRED), 401))
-
     # Get Request Data
     postRequest = json.loads(request.data)
     

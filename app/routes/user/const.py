@@ -14,8 +14,3 @@ PARAM_PASSWORD = 'password'
 PARAM_ROLES = 'roles'
 PARAM_TOKEN = 'token'
 PARAM_USERNAME = 'username'
-
-# Role
-ROLE_ADMIN = 'admin'
-ROLE_EDIT = 'edit'
-ROLE_VIEW = 'view'

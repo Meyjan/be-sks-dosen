@@ -1,9 +1,9 @@
-from logging import error
-from msilib.schema import Error
 from app import app
 from app.models import User
 from flask import jsonify, make_response, request
 from functools import wraps
+
+from app.routes.const import *
 
 import jwt
 
@@ -15,17 +15,71 @@ def validate_auth_token(f):
         token = None
 
         # Validate if token exists in header
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
+        if HEADER_ACCESS_TOKEN in request.headers:
+            token = request.headers[HEADER_ACCESS_TOKEN]
         if not token:
-            return make_response(jsonify(message="A valid token is missing!"), 401)
+            return make_response(jsonify(message=ERR_NO_TOKEN), 401)
         
         # Validate if the token is valid
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            data = jwt.decode(token, app.config[KEY_SECRET], algorithms=[ALGO_ENCRYPT])
             current_user = User.query.filter_by(id=data['id']).first()
         except:
-            return make_response(jsonify(message="Invalid token!"), 401)
+            return make_response(jsonify(message=ERR_INVALID_TOKEN), 401)
+
+        return f(current_user, *args, **kwargs)
+
+    return decorator
+
+# Verifying method (makes it static)
+# Returns the user about information and makes sure the user have edit access
+def validate_auth_token_edit_access(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = None
+
+        # Validate if token exists in header
+        if HEADER_ACCESS_TOKEN in request.headers:
+            token = request.headers[HEADER_ACCESS_TOKEN]
+        if not token:
+            return make_response(jsonify(message=ERR_NO_TOKEN), 401)
+        
+        # Validate if the token is valid
+        try:
+            data = jwt.decode(token, app.config[KEY_SECRET], algorithms=[ALGO_ENCRYPT])
+            current_user = User.query.filter_by(id=data['id']).first()
+        except:
+            return make_response(jsonify(message=ERR_INVALID_TOKEN), 401)
+        
+        if current_user.roles not in [ROLE_ADMIN, ROLE_EDIT]:
+            return make_response(jsonify(message=ERR_NO_EDIT_ACCESS), 401)
+
+        return f(current_user, *args, **kwargs)
+
+    return decorator
+
+# Verifying method (makes it static)
+# Returns the user about information and makes sure the user have admin access
+def validate_auth_token_admin_access(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = None
+
+        # Validate if token exists in header
+        if HEADER_ACCESS_TOKEN in request.headers:
+            token = request.headers[HEADER_ACCESS_TOKEN]
+        if not token:
+            return make_response(jsonify(message=ERR_NO_TOKEN), 401)
+        
+        # Validate if the token is valid
+        try:
+            data = jwt.decode(token, app.config[KEY_SECRET], algorithms=[ALGO_ENCRYPT])
+            current_user = User.query.filter_by(id=data['id']).first()
+        except:
+            return make_response(jsonify(message=ERR_INVALID_TOKEN), 401)
+        
+        if current_user.roles != ROLE_ADMIN:
+            return make_response(jsonify(message=ERR_NO_ADMIN_ACCESS), 401)
 
         return f(current_user, *args, **kwargs)
 

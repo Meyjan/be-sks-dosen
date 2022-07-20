@@ -5,6 +5,7 @@ from flask import abort, jsonify, make_response, request
 
 import json
 
+from app.routes.const import *
 from app.routes.user.const import *
 
 '''
