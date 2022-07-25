@@ -1,5 +1,4 @@
-from sqlalchemy import ForeignKey
-from app import app, db
+from app import db
 from app.models.data_master import DataMaster
 from app.models.program_studi import ProgramStudi
 

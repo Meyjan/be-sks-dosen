@@ -1,7 +1,7 @@
 from app.models import Score, User
 from flask import abort, jsonify, make_response
 
-import app.routes.score.constants as constants
+import app.routes._olddir_score.constants as constants
 
 # Get score owner
 # Used when given user_id or username to get the user owning that score

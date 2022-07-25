@@ -1,11 +1,11 @@
 from app import app, db
 from app.models import Score
 from app.routes.helper import validate_auth_token
-from app.routes.score.helper import get_score_owner, parse_score_request
+from app.routes._olddir_score.helper import get_score_owner, parse_score_request
 from flask import abort, jsonify, make_response, request
 
 import json
-import app.routes.score.constants as constants
+import app.routes._olddir_score.constants as constants
 
 # Update Score function
 # Updates existing score from database based on score id
