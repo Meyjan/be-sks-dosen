@@ -42,5 +42,6 @@ def login():
     return jsonify({
         PARAM_USERNAME: user.username,
         PARAM_EMAIL: user.email,
-        PARAM_TOKEN: token
+        PARAM_ROLES: user.roles,
+        PARAM_TOKEN: token,
     }), 200

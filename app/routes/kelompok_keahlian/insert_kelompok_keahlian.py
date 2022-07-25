@@ -1,7 +1,7 @@
 from app import app, db
-from app.models import Score
-from app.routes.helper import validate_auth_token
-from app.routes._olddir_score.helper import get_score_owner, parse_score_request
+from app.models import KelompokKeahlian
+from app.routes.helper import validate_auth_token_edit_access
+from app.routes.kelompok_keahlian.helper import validate_kk_request
 from flask import abort, jsonify, make_response, request
 
 import app.routes._olddir_score.constants as constants
@@ -9,30 +9,20 @@ import json
 
 # Insert Score function
 # Adds new score of a certain user in a certain year to database
-@app.route('/score', methods=['POST'])
-@validate_auth_token
-def insert_score(requester):
-    # Get Request Data
+@app.route('/kelompok_keahlian', methods=['POST'])
+@validate_auth_token_edit_access
+def insert_kelompok_keahlian(requester):
+    # Get kelom keahlian
     postRequest = json.loads(request.data)
-
-    # Get user and year
-    user = get_score_owner(postRequest)
-    year = postRequest[constants.YEAR]
-    
-    if user is None:
-        abort(make_response(jsonify(message="User doesn't exist"), 400))
-    if Score.query.filter_by(user_id = user.id, year = year).first() is not None:
-        abort(make_response(jsonify(message="Score for the user at that year exists"), 400))
+    kk = validate_kk_request(postRequest)
 
     # Execute insert score
-    score = Score(user_id = user.id, year = year)
-    score = parse_score_request(score, postRequest)
-    db.session.add(score)
+    db.session.add(kk)
     db.session.commit()
 
     # Return that request is successful
     return jsonify({
-        'username': user.username,
-        'year': year,
-        'message': "Successfully inserted new score"
+        'kode': kk.kode,
+        'kepanjangan': kk.kepanjangan,
+        'message': "Successfully inserted new kelompok keahlian"
     }), 200
