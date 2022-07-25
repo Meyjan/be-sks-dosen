@@ -35,9 +35,9 @@ def register():
 
     # Making sure the username and email doesn't exist in database
     if User.query.filter_by(username = username).first() is not None:
-        abort(make_response(jsonify(message=ERR_USERNAME_EXISTS), 400))
+        abort(make_response(jsonify(message=ERR_USERNAME_EXISTS), 200))
     if User.query.filter_by(email = email).first() is not None:
-        abort(make_response(jsonify(message=ERR_EMAIL_EXISTS), 400))
+        abort(make_response(jsonify(message=ERR_EMAIL_EXISTS), 200))
 
     # Execute insert user
     user = User(username = username, email = email, roles = ROLE_VIEW)
@@ -82,9 +82,9 @@ def register_admin():
 
     # Making sure the username and email doesn't exist in database
     if User.query.filter_by(username = username).first() is not None:
-        abort(make_response(jsonify(message=ERR_USERNAME_EXISTS), 400))
+        abort(make_response(jsonify(message=ERR_USERNAME_EXISTS), 200))
     if User.query.filter_by(email = email).first() is not None:
-        abort(make_response(jsonify(message=ERR_EMAIL_EXISTS), 400))
+        abort(make_response(jsonify(message=ERR_EMAIL_EXISTS), 200))
 
     # Execute insert user
     user = User(username = username, email = email, roles = ROLE_ADMIN)

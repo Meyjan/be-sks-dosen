@@ -33,9 +33,9 @@ def login():
     # Check if user and password is in database
     user = User.query.filter_by(username = username).first()
     if user is None:
-        abort(make_response(jsonify(message=ERR_INVALID_USERNAME_PASSWORD), 400))
+        abort(make_response(jsonify(message=ERR_INVALID_USERNAME_PASSWORD), 200))
     if not user.check_password(password):
-        abort(make_response(jsonify(message=ERR_INVALID_USERNAME_PASSWORD), 400))
+        abort(make_response(jsonify(message=ERR_INVALID_USERNAME_PASSWORD), 200))
 
     # Return the user token
     token = user.generate_auth_token()
